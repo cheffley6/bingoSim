@@ -76,7 +76,7 @@ def driver():
     # and false otherwise
     trues = 0
     falses = 0
-    for i in range(10000):
+    for i in range(300000):
         addTrue = False
         calledNumbers = playOneBingoGame()
         # print "called numbers: ", calledNumbers
@@ -100,7 +100,9 @@ def driver():
             trues += 1
         else:
             falses += 1
-            
+        if i % 3000 == 0:
+            print float(i) / 300000, "percent finished"
+
     print trues
     print trues + falses
 

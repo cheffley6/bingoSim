@@ -1,0 +1,4 @@
+Results on 7/14/19:
+Ran 300,000 games of Bingo with this implementation. It currently counts ones where 7 B's happen as happening twice (just add a break statement to fix this),
+8 B's as three times, and so on. It returned 84 had 6 B's in a row, but 9 of the 84 were duplicates, so the real number was 75.
+So, 75 out of 300 thousand games had 6 B's in a row, which is 0.00025 / 1, or 0.025%, as compared to our original estimate of 0.000066756147914, or 0.0066756%. This is a bit less than four times as likely, which is about what I expected.
