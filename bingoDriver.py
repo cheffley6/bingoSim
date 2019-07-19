@@ -3,7 +3,7 @@ import copy
 
 def createCards():
     cards = []
-    for i in range(70): # there are roughly 70 people but confirm the number later
+    for i in range(88): # there are 88 people according to dan diener
         card = []
         a = 1
         b = 15
@@ -36,8 +36,8 @@ def checkCard(called, card):
             return True
 
     # check diagonals
-    firstDiag = [0, 6, 12, 18, 24]
-    secondDiag = [4, 8, 12, 16, 20]
+    firstDiag = [0, 6, 12, 18, 24] # indices for winning a game by doing diagonal from top left to bottom right
+    secondDiag = [4, 8, 12, 16, 20] # indices for winning by doing diagonal from bottom left to top right
     if set([card[f] for f in firstDiag]) <= called or set([card[s] for s in secondDiag]) <= set(called):
         # print "win by diag"
         return True
@@ -52,59 +52,41 @@ def playOneBingoGame():
     cards = createCards()
     numbers = [i for i in range(1, 76)]
     random.shuffle(numbers)
-    end = False
-    calledUnsorted = []
 
     # add numbers and check if anyone has bingo
     while True:
         called.append(numbers.pop())
-        for card in cards:
-            if checkCard(called, card):
-                calledUnsorted = copy.copy(called)
-                called.sort()
-                card.sort()
-                # print "called ", called
-                # print "a winn ", card # note: this stops execution as soon as any winner is found
-                end = True
-                # print "before: ", calledUnsorted
-                return calledUnsorted
+        if any(checkCard(called, card) for card in cards):
+            return called
             
             
 
 def driver():
-    # game results is a list of booleans s.t. a boolean is true if the game had 6 B's in a row pulled
-    # and false otherwise
     trues = 0
-    falses = 0
-    for i in range(300000):
+    total = 10000
+    for i in range(total):
         addTrue = False
         calledNumbers = playOneBingoGame()
         # print "called numbers: ", calledNumbers
         for ind in range(len(calledNumbers)):
 
             # this section needs work
-            if 1 <= calledNumbers[ind] <= 15:
-                try:
-                    if 1 <= calledNumbers[ind + 1] <= 15:
-                        if 1 <= calledNumbers[ind + 2] <= 15:
-                            if 1 <= calledNumbers[ind + 3] <= 15:
-                                if 1 <= calledNumbers[ind + 4] <= 15:
-                                    if 1 <= calledNumbers[ind + 5] <= 15:
-                                        addTrue = True
-                                        print calledNumbers
-                except:
-                    continue
+            try:
+                if all([1 < calledNumbers[ind + j] <= 15 for j in range(0, 6)]):
+                    addTrue = True
+                    print calledNumbers
+                    break # to prevent repeats in the case of games where 7 or more B's are called in a row
+            except:
+                continue
 
 
         if addTrue:
             trues += 1
-        else:
-            falses += 1
-        if i % 3000 == 0:
-            print float(i) / 300000, "percent finished"
+        if i % (total / 100)  == 0:
+            print float(i) / (float(total) / 100), "percent finished"
 
-    print trues
-    print trues + falses
+    print trues, " games where 6 B's in a row were called out of ",
+    print total, " games."
 
 driver()
         
