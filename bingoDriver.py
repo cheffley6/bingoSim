@@ -65,7 +65,7 @@ def driver():
     trues = 0
     total = 10000
     for i in range(total):
-        addTrue = False
+        add = False
         calledNumbers = playOneBingoGame()
         # print "called numbers: ", calledNumbers
         for ind in range(len(calledNumbers)):
@@ -73,14 +73,14 @@ def driver():
             # this section needs work
             try:
                 if all([1 < calledNumbers[ind + j] <= 15 for j in range(0, 6)]):
-                    addTrue = True
+                    add = True
                     print calledNumbers
                     break # to prevent repeats in the case of games where 7 or more B's are called in a row
             except:
                 continue
 
 
-        if addTrue:
+        if add:
             trues += 1
         if i % (total / 100)  == 0:
             print float(i) / (float(total) / 100), "percent finished"
